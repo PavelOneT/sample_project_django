@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from bboard.models import Bb
+from bboard.models import Bb, Rubric
 
 def index(request):
    bbs = Bb.objects.order_by('-published')
@@ -17,4 +17,14 @@ def index(request):
     #     s += bb.title + '\r\n' + bb.content + '\r\n\r\n'
     #
     # return HttpResponse(s, content_type='text/plain; charset=utf-8')
+
+def by_rubric(request, rubric_id):
+   bbs = Bb.objects.filter(rubric=rubric_id)
+   rubrics = Rubric.objects.all
+   current_rubric = Rubric.objects.get(pk=rubric_id)
+   context = {
+      "bbs": bbs,
+      "rubrics": rubrics,
+      "current_rubric": current_rubric
+   }
 
